@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volume Booster Pro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-host" id="hostLabel">—</div>
+          <div class="brand-title" id="titleLabel">Loading…</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="hbtn" id="profileBtn" title="Site profile" aria-label="Site profile" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="hbtn-dot" id="profileDot" hidden></span>
+        </button>
+        <button class="hbtn power" id="powerBtn" title="Toggle on/off" aria-label="Toggle booster" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+            <line x1="12" y1="2" x2="12" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Profile popover -->
+      <div class="popover" id="profilePopover" hidden role="dialog" aria-label="Site profile">
+        <div class="pop-head">
+          <span class="pop-title">Profile</span>
+          <span class="pop-host" id="popHost">—</span>
+        </div>
+        <div class="pop-body">
+          <div class="pop-status" id="popStatus">No profile saved for this site</div>
+          <div class="pop-row">
+            <span class="pop-label">Auto-apply on visit</span>
+            <button class="switch" id="autoApplyToggle" role="switch" aria-checked="false" aria-label="Auto-apply" disabled></button>
+          </div>
+          <div class="pop-actions">
+            <button class="pop-btn primary" id="saveProfileBtn">Save current settings</button>
+            <button class="pop-btn danger" id="deleteProfileBtn" disabled>Delete profile</button>
+          </div>
+          <button class="pop-link" id="manageProfilesBtn">
+            <span>Manage all profiles</span>
+            <span class="pop-count" id="profileCount">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ ACCORDIONS ============ -->
+    <main class="accordions" id="accordions">
+
+      <!-- ===== MIXER ===== -->
+      <section class="accordion" data-key="mixer" data-open="true">
+        <button class="acc-trigger" type="button" aria-expanded="true" aria-controls="acc-body-mixer">
+          <span class="acc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"/>
+              <line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/>
+              <line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/>
+              <line x1="9" y1="8" x2="15" y2="8"/>
+              <line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+          </span>
+          <span class="acc-titles">
+            <span class="acc-title">Mixer</span>
+            <span class="acc-meta" id="mixerMeta">100% · Limit</span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
+        </button>
+
+        <div class="acc-body" id="acc-body-mixer" role="region" aria-labelledby="acc-body-mixer">
+          <div class="acc-inner">
+
+            <!-- Volume hero -->
+            <div class="vol-display">
+              <div class="vol-number-wrap">
+                <input type="number" class="vol-number" id="volumeInput" value="100" min="0" max="600" step="1"
+                       inputmode="numeric" aria-label="Volume percentage">
+                <span class="vol-unit">%</span>
+              </div>
+              <div class="vol-status" id="volLabel">Normal</div>
+            </div>
+
+            <!-- Slider -->
+            <div class="slider-wrap">
+              <div class="slider-track">
+                <div class="slider-fill" id="sliderFill"></div>
+                <div class="slider-marker" style="left:16.66%"></div>
+              </div>
+              <input type="range" class="slider-input" id="volumeSlider"
+                     min="0" max="600" value="100" step="1"
+                     aria-label="Volume slider"
+                     aria-valuemin="0" aria-valuemax="600" aria-valuenow="100">
+              <div class="slider-marks" aria-hidden="true">
+                <span>0</span><span class="mid">100</span><span>600</span>
+              </div>
+            </div>
+
+            <!-- Inline stereo meter (right under volume) -->
+            <div class="meter">
+              <div class="meter-row">
+                <span class="meter-ch">L</span>
+                <div class="meter-bar"><div class="meter-fill" id="meterL"></div></div>
+              </div>
+              <div class="meter-row">
+                <span class="meter-ch">R</span>
+                <div class="meter-bar"><div class="meter-fill" id="meterR"></div></div>
+              </div>
+            </div>
+
+            <!-- Subsection: Quick presets -->
+            <div class="sub">
+              <div class="sub-label">Quick presets</div>
+              <div class="preset-row" aria-label="Volume presets">
+                <button class="chip" data-value="0">Mute</button>
+                <button class="chip" data-value="50">50</button>
+                <button class="chip active" data-value="100">100</button>
+                <button class="chip" data-value="200">2×</button>
+                <button class="chip" data-value="400">4×</button>
+                <button class="chip" data-value="600">6×</button>
+              </div>
+            </div>
+
+            <!-- Subsection: Effects -->
+            <div class="sub">
+              <div class="sub-label">Effects</div>
+              <div class="toggle-grid" aria-label="Audio effects">
+                <button class="tchip" id="bassToggle" data-key="bassBoost" role="switch" aria-checked="false">
+                  <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 12h2l2-7 4 14 3-10 2 5h5"/>
+                  </svg>
+                  <span class="tchip-label">Bass</span>
+                </button>
+                <button class="tchip" id="voiceToggle" data-key="voice" role="switch" aria-checked="false">
+                  <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="2" width="6" height="12" rx="3"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                  </svg>
+                  <span class="tchip-label">Voice</span>
+                </button>
+                <button class="tchip active" id="limiterToggle" data-key="limiter" role="switch" aria-checked="true">
+                  <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <path d="M2 12h4l3-9 4 18 3-9h4"/>
+                  </svg>
+                  <span class="tchip-label">Limit</span>
+                </button>
+                <button class="tchip" id="monoToggle" data-key="mono" role="switch" aria-checked="false">
+                  <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                  </svg>
+                  <span class="tchip-label">Mono</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== EQUALIZER ===== -->
+      <section class="accordion" data-key="eq">
+        <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-body-eq">
+          <span class="acc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="3" x2="6" y2="21"/>
+              <line x1="12" y1="3" x2="12" y2="21"/>
+              <line x1="18" y1="3" x2="18" y2="21"/>
+              <circle cx="6" cy="9" r="2" fill="currentColor"/>
+              <circle cx="12" cy="15" r="2" fill="currentColor"/>
+              <circle cx="18" cy="7" r="2" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="acc-titles">
+            <span class="acc-title">Equalizer</span>
+            <span class="acc-meta" id="eqMeta">Flat</span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
+        </button>
+
+        <div class="acc-body" id="acc-body-eq" role="region">
+          <div class="acc-inner">
+
+            <div class="eq-header">
+              <span class="sub-label">Preset</span>
+              <select class="select" id="eqPresetSelect" aria-label="EQ preset">
+                <option value="flat">Flat</option>
+                <option value="bass">Bass Heavy</option>
+                <option value="vocal">Vocal Clarity</option>
+                <option value="treble">Treble Boost</option>
+                <option value="loudness">Loudness</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+
+            <div class="eq-bands">
+              <div class="eq-band">
+                <span class="eq-val" data-band="0">0</span>
+                <input type="range" class="eq-slider" min="-12" max="12" value="0" data-band="0" aria-label="60 Hz">
+                <span class="eq-label">60</span>
+              </div>
+              <div class="eq-band">
+                <span class="eq-val" data-band="1">0</span>
+                <input type="range" class="eq-slider" min="-12" max="12" value="0" data-band="1" aria-label="230 Hz">
+                <span class="eq-label">230</span>
+              </div>
+              <div class="eq-band">
+                <span class="eq-val" data-band="2">0</span>
+                <input type="range" class="eq-slider" min="-12" max="12" value="0" data-band="2" aria-label="910 Hz">
+                <span class="eq-label">910</span>
+              </div>
+              <div class="eq-band">
+                <span class="eq-val" data-band="3">0</span>
+                <input type="range" class="eq-slider" min="-12" max="12" value="0" data-band="3" aria-label="4 kHz">
+                <span class="eq-label">4k</span>
+              </div>
+              <div class="eq-band">
+                <span class="eq-val" data-band="4">0</span>
+                <input type="range" class="eq-slider" min="-12" max="12" value="0" data-band="4" aria-label="14 kHz">
+                <span class="eq-label">14k</span>
+              </div>
+            </div>
+
+            <div class="eq-axis">
+              <span>−12</span><span>0</span><span>+12 dB</span>
+            </div>
+
+            <button class="ghost-btn" id="resetEqBtn" type="button">Reset to flat</button>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== AUDIO TABS ===== -->
+      <section class="accordion" data-key="tabs">
+        <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-body-tabs">
+          <span class="acc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="6" rx="1"/>
+              <rect x="3" y="14" width="18" height="6" rx="1"/>
+              <line x1="7" y1="7" x2="7" y2="7"/>
+              <line x1="7" y1="17" x2="7" y2="17"/>
+            </svg>
+          </span>
+          <span class="acc-titles">
+            <span class="acc-title">Audio Tabs</span>
+            <span class="acc-meta" id="tabsMeta">Scanning…</span>
+          </span>
+          <span class="acc-badge" id="tabsBadge" hidden>0</span>
+          <span class="acc-chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </span>
+        </button>
+
+        <div class="acc-body" id="acc-body-tabs" role="region">
+          <div class="acc-inner">
+
+            <div class="tabs-head">
+              <span class="sub-label" id="tabsLabel">Loading…</span>
+              <button class="ghost-btn small" id="refreshTabsBtn" title="Refresh" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="tabgroups" id="tabsList">
+              <div class="tabs-empty" id="tabsEmpty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <line x1="22" y1="9" x2="16" y2="15"/>
+                  <line x1="16" y1="9" x2="22" y2="15"/>
+                </svg>
+                <span>No tabs are playing audio right now.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <span class="status" id="statusText" aria-live="polite">Active</span>
+      <div class="footer-right">
+        <button class="ghost-btn tiny" id="resetBtn" title="Reset all settings" type="button">Reset</button>
+        <button class="ghost-btn tiny" id="shortcutsBtn" title="Keyboard shortcuts" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="6" width="20" height="12" rx="2"/>
+            <line x1="6" y1="10" x2="6" y2="10"/>
+            <line x1="10" y1="10" x2="10" y2="10"/>
+            <line x1="14" y1="10" x2="14" y2="10"/>
+            <line x1="18" y1="10" x2="18" y2="10"/>
+            <line x1="6" y1="14" x2="18" y2="14"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ PROFILES MODAL ============ -->
+  <div class="modal" id="profilesModal" hidden>
+    <div class="modal-backdrop" id="profilesModalBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-labelledby="profilesModalTitle" aria-modal="true">
+      <div class="modal-header">
+        <h2 class="modal-title" id="profilesModalTitle">Saved profiles</h2>
+        <button class="hbtn small" id="closeProfilesModal" aria-label="Close" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="profilesModalBody">
+        <div class="modal-empty">No profiles saved yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SHORTCUTS MODAL ============ -->
+  <div class="modal" id="shortcutsModal" hidden>
+    <div class="modal-backdrop" id="shortcutsModalBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-labelledby="shortcutsModalTitle" aria-modal="true">
+      <div class="modal-header">
+        <h2 class="modal-title" id="shortcutsModalTitle">Keyboard shortcuts</h2>
+        <button class="hbtn small" id="closeShortcutsModal" aria-label="Close" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="kbd-row"><span><kbd>Alt</kbd>+<kbd>↑</kbd></span><span>Volume +10%</span></div>
+        <div class="kbd-row"><span><kbd>Alt</kbd>+<kbd>↓</kbd></span><span>Volume −10%</span></div>
+        <div class="kbd-row"><span><kbd>Alt</kbd>+<kbd>M</kbd></span><span>Toggle mute</span></div>
+        <p class="kbd-note">Customise in chrome://extensions/shortcuts</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
