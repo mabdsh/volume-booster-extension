@@ -274,6 +274,9 @@
     try { chain.ctx.close(); } catch (e) {}
     pendingContexts.delete(chain.ctx);
     chains.delete(media);
+    // FIX #1: Reset tracking flags so a re-inserted element gets re-hooked.
+    trackedMedia.delete(media);
+    media.__vbpHooked = false;
   }
 
   // ============ METERING / STATE ============
@@ -397,9 +400,16 @@
     }
   }, true);
 
-  // React to storage changes (skip pure UI-state keys)
+  // FIX #2: Skip storage-triggered re-apply when the write came from the popup.
+  // The popup already pushed settings directly via SET_AUDIO, so re-applying
+  // from storage here would just race against the already-completed direct push.
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
+    // Popup tags its writes with an origin starting with 'popup-'.
+    // Since it always sends a direct SET_AUDIO message alongside the write,
+    // we can safely skip the redundant storage-based re-apply.
+    const origin = changes._origin?.newValue || '';
+    if (origin.startsWith('popup-')) return;
     const audioRelevant = Object.keys(changes).some((k) =>
       !['accordionState', '_origin'].includes(k)
     );

@@ -402,6 +402,9 @@
       const isNew = !editingProfile;
       editingProfile = true;
       chrome.storage.local.set({ profiles, _origin: ORIGIN_ID }, () => {
+        if (chrome.runtime.lastError) {
+          console.warn('[VBP] Failed to save profile:', chrome.runtime.lastError.message);
+        }
         updateProfileUI();
         setStatus(isNew ? `Saved profile · ${currentHost}` : 'Profile updated', 1800);
       });
@@ -413,6 +416,10 @@
       delete autoApply[currentHost];
       editingProfile = false;
       chrome.storage.local.set({ profiles, autoApply, _origin: ORIGIN_ID }, () => {
+        if (chrome.runtime.lastError) {
+          console.warn('[VBP] Failed to delete profile:', chrome.runtime.lastError.message);
+          return;
+        }
         chrome.storage.local.get(null, (data) => {
           assignFrom(data);
           renderAll();
@@ -428,6 +435,10 @@
       const isOn = !autoApply[currentHost];
       if (isOn) autoApply[currentHost] = true; else delete autoApply[currentHost];
       chrome.storage.local.set({ autoApply, _origin: ORIGIN_ID }, () => {
+        if (chrome.runtime.lastError) {
+          console.warn('[VBP] Failed to save autoApply:', chrome.runtime.lastError.message);
+          return;
+        }
         updateProfileUI();
         chrome.runtime.sendMessage({ type: 'BG_PUSH_TO_TAB', tabId: currentTabId });
         setStatus(isOn ? 'Auto-apply enabled' : 'Auto-apply disabled', 1500);
@@ -469,7 +480,12 @@
       if (!editingProfile) {
         let dirty = false;
         for (const k of Object.keys(state)) {
-          if (changes[k]) { state[k] = changes[k].newValue; dirty = true; }
+          // FIX #4: Guard against undefined newValue (e.g. key deleted externally)
+          // to prevent renderAll() from crashing on corrupt/missing state fields.
+          if (k in changes && changes[k].newValue !== undefined) {
+            state[k] = changes[k].newValue;
+            dirty = true;
+          }
         }
         if (dirty) renderAll();
       }
@@ -519,7 +535,12 @@
       profiles[currentHost] = { ...state, eq: [...state.eq] };
     }
 
-    chrome.storage.local.set(payload);
+    // FIX #6: Log storage write errors so failures aren't silently swallowed.
+    chrome.storage.local.set(payload, () => {
+      if (chrome.runtime.lastError) {
+        console.warn('[VBP] Storage write error:', chrome.runtime.lastError.message);
+      }
+    });
 
     if (currentTabId) {
       chrome.tabs.sendMessage(currentTabId, {
@@ -547,6 +568,8 @@
 
   // ============ METERING ============
   function startMetering() {
+    // FIX (Polish): Bumped from 100ms to 150ms — imperceptible visually,
+    // reduces IPC round-trips to the content script by 33%.
     meterTimer = setInterval(() => {
       // Skip work if mixer accordion is collapsed or page is hidden.
       if (!currentTabId || !accordionState.mixer || document.hidden) {
@@ -561,7 +584,7 @@
         meterL.style.width = mapDb(resp.left) + '%';
         meterR.style.width = mapDb(resp.right) + '%';
       });
-    }, 100);
+    }, 150);
   }
 
   // ============ TAB MANAGER ============
@@ -595,11 +618,12 @@
       ? 'No audio tabs'
       : (tabs.length === 1 ? '1 tab' : `${tabs.length} tabs`);
 
-    // Clear existing groups
-    tabsList.innerHTML = '';
+    // FIX #7: Instead of clearing innerHTML (which detaches the tabsEmpty reference
+    // and makes re-insertion fragile), remove only the dynamically built tab groups
+    // and toggle tabsEmpty visibility via style — keeping the DOM node stable.
+    tabsList.querySelectorAll('.tabgroup').forEach((g) => g.remove());
 
     if (!tabs.length) {
-      tabsList.appendChild(tabsEmpty);
       tabsEmpty.style.display = 'flex';
       return;
     }
@@ -759,6 +783,10 @@
       autoBtn.addEventListener('click', () => {
         if (isAuto) delete autoApply[host]; else autoApply[host] = true;
         chrome.storage.local.set({ autoApply, _origin: ORIGIN_ID }, () => {
+          if (chrome.runtime.lastError) {
+            console.warn('[VBP] Failed to update autoApply:', chrome.runtime.lastError.message);
+            return;
+          }
           renderProfilesModal(); updateProfileUI();
         });
       });
@@ -770,6 +798,10 @@
       delBtn.addEventListener('click', () => {
         delete profiles[host]; delete autoApply[host];
         chrome.storage.local.set({ profiles, autoApply, _origin: ORIGIN_ID }, () => {
+          if (chrome.runtime.lastError) {
+            console.warn('[VBP] Failed to delete profile:', chrome.runtime.lastError.message);
+            return;
+          }
           renderProfilesModal();
           if (host === currentHost) {
             editingProfile = false;

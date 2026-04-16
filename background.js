@@ -36,9 +36,11 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       migrated = true;
     }
   }
+  // FIX #3: Removed `toSet.prevVolume = undefined` — chrome.storage silently
+  // ignores undefined values so it never deleted the key. The explicit
+  // chrome.storage.local.remove() call below is the correct removal path.
   if (typeof existing.prevVolume === 'number') {
     mutedPrev.__global = existing.prevVolume;
-    toSet.prevVolume = undefined; // will be cleared below
     migrated = true;
   }
   if (migrated) {

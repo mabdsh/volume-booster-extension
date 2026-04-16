@@ -69,7 +69,8 @@
 
       <!-- ===== MIXER ===== -->
       <section class="accordion" data-key="mixer" data-open="true">
-        <button class="acc-trigger" type="button" aria-expanded="true" aria-controls="acc-body-mixer">
+        <!-- FIX #5a: Added id="acc-trigger-mixer" so the region below can reference it -->
+        <button class="acc-trigger" id="acc-trigger-mixer" type="button" aria-expanded="true" aria-controls="acc-body-mixer">
           <span class="acc-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="4" y1="21" x2="4" y2="14"/>
@@ -94,7 +95,9 @@
           </span>
         </button>
 
-        <div class="acc-body" id="acc-body-mixer" role="region" aria-labelledby="acc-body-mixer">
+        <!-- FIX #5b: aria-labelledby now correctly points to the trigger button,
+             not to itself (which caused screen readers to read the full region content as its label) -->
+        <div class="acc-body" id="acc-body-mixer" role="region" aria-labelledby="acc-trigger-mixer">
           <div class="acc-inner">
 
             <!-- Volume hero -->
@@ -191,7 +194,8 @@
 
       <!-- ===== EQUALIZER ===== -->
       <section class="accordion" data-key="eq">
-        <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-body-eq">
+        <!-- FIX #5c: Added id="acc-trigger-eq" -->
+        <button class="acc-trigger" id="acc-trigger-eq" type="button" aria-expanded="false" aria-controls="acc-body-eq">
           <span class="acc-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="6" y1="3" x2="6" y2="21"/>
@@ -213,7 +217,8 @@
           </span>
         </button>
 
-        <div class="acc-body" id="acc-body-eq" role="region">
+        <!-- FIX #5d: Added aria-labelledby="acc-trigger-eq" (was missing entirely) -->
+        <div class="acc-body" id="acc-body-eq" role="region" aria-labelledby="acc-trigger-eq">
           <div class="acc-inner">
 
             <div class="eq-header">
@@ -268,7 +273,8 @@
 
       <!-- ===== AUDIO TABS ===== -->
       <section class="accordion" data-key="tabs">
-        <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-body-tabs">
+        <!-- FIX #5e: Added id="acc-trigger-tabs" -->
+        <button class="acc-trigger" id="acc-trigger-tabs" type="button" aria-expanded="false" aria-controls="acc-body-tabs">
           <span class="acc-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="4" width="18" height="6" rx="1"/>
@@ -289,7 +295,8 @@
           </span>
         </button>
 
-        <div class="acc-body" id="acc-body-tabs" role="region">
+        <!-- FIX #5f: Added aria-labelledby="acc-trigger-tabs" (was missing entirely) -->
+        <div class="acc-body" id="acc-body-tabs" role="region" aria-labelledby="acc-trigger-tabs">
           <div class="acc-inner">
 
             <div class="tabs-head">
