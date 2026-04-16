@@ -151,13 +151,15 @@
             <div class="sub">
               <div class="sub-label">Effects</div>
               <div class="toggle-grid" aria-label="Audio effects">
-                <button class="tchip" id="bassToggle" data-key="bassBoost" role="switch" aria-checked="false">
+                <button class="tchip" id="bassToggle" data-key="bassBoost" role="switch" aria-checked="false"
+                        data-tooltip="Adds a deep bass shelf boost (+10 dB at 200 Hz). Makes music sound fuller and punchier.">
                   <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                     <path d="M3 12h2l2-7 4 14 3-10 2 5h5"/>
                   </svg>
                   <span class="tchip-label">Bass</span>
                 </button>
-                <button class="tchip" id="voiceToggle" data-key="voice" role="switch" aria-checked="false">
+                <button class="tchip" id="voiceToggle" data-key="voice" role="switch" aria-checked="false"
+                        data-tooltip="Isolates vocals by boosting the center channel. Great for podcasts, calls, and speech.">
                   <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="9" y="2" width="6" height="12" rx="3"/>
                     <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -165,13 +167,15 @@
                   </svg>
                   <span class="tchip-label">Voice</span>
                 </button>
-                <button class="tchip active" id="limiterToggle" data-key="limiter" role="switch" aria-checked="true">
+                <button class="tchip active" id="limiterToggle" data-key="limiter" role="switch" aria-checked="true"
+                        data-tooltip="Prevents audio from clipping or distorting when volume is boosted above 100%.">
                   <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                     <path d="M2 12h4l3-9 4 18 3-9h4"/>
                   </svg>
                   <span class="tchip-label">Limit</span>
                 </button>
-                <button class="tchip" id="monoToggle" data-key="mono" role="switch" aria-checked="false">
+                <button class="tchip" id="monoToggle" data-key="mono" role="switch" aria-checked="false"
+                        data-tooltip="Mixes left and right channels together. Useful for headphones or mono speakers.">
                   <svg class="tchip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                     <circle cx="12" cy="12" r="9"/>
                     <line x1="3" y1="12" x2="21" y2="12"/>

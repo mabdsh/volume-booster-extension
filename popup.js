@@ -645,8 +645,12 @@
     const fav = document.createElement('img');
     fav.className = 'taudio-fav';
     fav.alt = '';
-    fav.src = t.favIconUrl || '';
-    fav.onerror = () => { fav.style.visibility = 'hidden'; };
+    if (t.favIconUrl) {
+      fav.src = t.favIconUrl;
+      fav.onerror = () => { fav.style.visibility = 'hidden'; };
+    } else {
+      fav.style.visibility = 'hidden';
+    }
     row.appendChild(fav);
 
     const info = document.createElement('div');

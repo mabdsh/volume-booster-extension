@@ -3,8 +3,12 @@
   "name": "Volume Booster",
   "version": "1.0.0",
   "description": "Professional audio amplifier — 0–600% boost, 5-band EQ, voice isolation, per-site profiles, multi-tab control.",
+  "minimum_chrome_version": "107",
   "permissions": ["activeTab", "scripting", "storage", "tabs"],
   "host_permissions": ["<all_urls>"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
